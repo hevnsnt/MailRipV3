@@ -78,7 +78,7 @@ def comboloader(input_file):
                     new_combo = str(new_combo.replace('\n', ''))
                     result(output_clean, new_combo)
                 counter += 1
-                print(f'loading ... {counter}', end="")
+                print('\r\033[K' + f'loading ... {counter}', end="")
             except:
                 continue
     # write logs when finished and quit:
