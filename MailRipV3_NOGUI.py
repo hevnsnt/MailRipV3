@@ -146,7 +146,7 @@ def checker(checker_type, default_threads, default_timeout, default_email, combo
         targets_left = targets_total
         if targets_total > 0:
             combos_available = True
-            print('Done! Amount of combos loaded:' + fore.red + f'{str(targets_total)}\n\n' + Style.RESET_ALL)
+            print('Done! Amount of combos loaded:' + Fore.red + f'{str(targets_total)}\n\n' + Style.RESET_ALL)
         else:
             print('Done! No combos loaded.\n\n')
         # start checker threads:
