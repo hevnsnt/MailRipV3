@@ -49,7 +49,7 @@ def comboloader(input_file):
     result(output_clean, str('\n' + output_startup + '\n' + len(output_startup) * '='))
     # import the combos:
     try:
-        for line in open(input_file, 'r'):
+        for line in open(input_file, 'r', encoding='utf-8', errors='ignore'bl):
             try:
                 # replace any other seperator than semicolon in combos:
                 new_combo = str(

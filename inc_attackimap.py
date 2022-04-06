@@ -23,6 +23,7 @@ import socket
 import imaplib
 import json
 from inc_etc import result
+from colorama import Fore, Style, init as coloramainit
 
 # [VARIABLES AND OTHER STUFF]
 # ---------------------------
@@ -244,7 +245,7 @@ def imapchecker(default_timeout, target):
             result_output = str(f'email={str(target_email)}, host={str(target_host)}:{str(target_port)}, login={str(target_user)}:{str(target_password)}')
             result(output_hits, result_output)
             # show found login on screen:
-            print(f'[VALID]    {result_output}')
+            print(Fore.Green + f'[VALID]    {result_output}' + Style.RESET_ALL)
             return True
         else:
             return False

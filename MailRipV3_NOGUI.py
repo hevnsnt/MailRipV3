@@ -42,6 +42,8 @@ from time import sleep
 from inc_comboloader import comboloader
 from inc_etc import clean
 from inc_etc import get_combofile_nogui
+from colorama import Fore, Style, init as coloramainit
+from os import cpu_count
 
 # [VARIOUS]
 # ---------
@@ -53,14 +55,9 @@ main_logo = '''
  |_|  |_\__,_|_|_(_)_|_\_| .__/  \_/|___/
                          |_|             
 
-          **********************
-          *** NO GUI VERSION ***
-          **********************
-
-Tip or donate for faster development:
-
-    (BTC) 1KFMr9bJJh4MctKAy1kzpaqy6m5b3V2VRU
-    (LTC) LX1v9NQfMAvLJGWFhJSHTBWygeg8MZUJbK
+          ***********************
+          *** GO FAST VERSION ***
+          ***********************
 
 '''
 
@@ -74,6 +71,12 @@ checker_queue = Queue()
 
 # [FUNCTIONS]
 # -----------
+def signal_handler(sig, frame):
+	#Catch CTRL+C and exit cleanly
+	print("")
+	print(Fore.RED + '[+] Exiting '+ Style.RESET_ALL)
+	sys.exit(0)
+
 
 def checker_thread(checker_type, default_timeout, default_email):
     '''
@@ -143,7 +146,7 @@ def checker(checker_type, default_threads, default_timeout, default_email, combo
         targets_left = targets_total
         if targets_total > 0:
             combos_available = True
-            print(f'Done! Amount of combos loaded: {str(targets_total)}\n\n')
+            print('Done! Amount of combos loaded:' + fore.red + f'{str(targets_total)}\n\n' + Style.RESET_ALL)
         else:
             print('Done! No combos loaded.\n\n')
         # start checker threads:
@@ -191,11 +194,12 @@ def main():
     '''
     # set default values for needed variables:
     default_timeout = float(3.0)
-    default_threads = int(5)
+    default_threads = cpu_count()
     default_email = str('user@email.com')
     combofile = str('combos.txt')
     checker_type = str('smtp')
     clean()
+    coloramainit() # Needed to fix win10/11 terminal colors
     print(main_logo + '\n\n')
     # get values for variables from user input:
     try:
@@ -210,9 +214,11 @@ def main():
             default_email = str(
                 input('Your Email [e.g. your@email.com]: ')
             )
+        else:
+             checker_type = 'imap'
         # threads to use:
         default_threads = int(
-            input('Checker Threads [e.g. 1]: ')
+            input(f'Checker Threads [{default_threads}]: ') or int(cpu_count())
         )
         # default timeout for connections:
         default_timeout = float(
@@ -236,11 +242,6 @@ def main():
                 + f'timeout:    {str(default_timeout)}\n\n'
                 + 38*'-' + '\n'
             )
-            print(
-                'Tip or donate for faster development:\n\n'
-                + '    (BTC) 1KFMr9bJJh4MctKAy1kzpaqy6m5b3V2VRU\n'
-                + '    (LTC) LX1v9NQfMAvLJGWFhJSHTBWygeg8MZUJbK\n\n'
-            )
             print('Please be patient and wait while all combos are being checked ...\n\n')
             checker_result = checker(
                 str(checker_type),
@@ -259,11 +260,6 @@ def main():
                     + f'hits:      {str(hits)}\n'
                     + f'fails:     {str(fails)}\n\n'
                     + 38*'-' + '\n'
-                )
-                print(
-                    'Tip or donate for faster development:\n\n'
-                    + '    (BTC) 1KFMr9bJJh4MctKAy1kzpaqy6m5b3V2VRU\n'
-                    + '    (LTC) LX1v9NQfMAvLJGWFhJSHTBWygeg8MZUJbK\n\n\n'
                 )
                 print('Press [ENTER] to exit ...')
                 input()
