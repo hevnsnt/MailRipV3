@@ -49,6 +49,7 @@ def comboloader(input_file):
     result(output_clean, str('\n' + output_startup + '\n' + len(output_startup) * '='))
     # import the combos:
     try:
+        counter = 0
         for line in open(input_file, 'r', encoding='utf-8', errors='ignore'):
             try:
                 # replace any other seperator than semicolon in combos:
@@ -76,6 +77,8 @@ def comboloader(input_file):
                     loaded_combos.append(new_combo)
                     new_combo = str(new_combo.replace('\n', ''))
                     result(output_clean, new_combo)
+                counter += 1
+                print(f'loading ... {counter}', end="")
             except:
                 continue
     # write logs when finished and quit:
